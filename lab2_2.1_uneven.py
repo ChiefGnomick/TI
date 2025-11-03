@@ -2,7 +2,7 @@ from collections import Counter
 
 text = "ЧТО ОН УМЕН И ОЧЕНЬ МИЛ. МЫ ВСЕ УЧИЛИСЬ ПОНЕМНОГУ"
 
-freq = Counter(text.replace('.', '').replace(',', ''))
+freq = Counter(text)
 total = sum(freq.values())
 prob = {char: count/total for char, count in freq.items()}
 
@@ -39,7 +39,6 @@ def generate_codes(chars):
 
 codes = generate_codes(sorted_chars)
 
-# Вывод таблицы
 print(f"{'Буква':<5} {'Код':<8} {'pi':<8} {'ki':<3}")
 for char, p in sorted_chars:
     code = codes[char]

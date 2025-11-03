@@ -3,7 +3,6 @@ import heapq
 import itertools
 
 text = "ЧТО ОН УМЕН И ОЧЕНЬ МИЛ. МЫ ВСЕ УЧИЛИСЬ ПОНЕМНОГУ"
-text = text.replace('.', '').replace(',', '')
 
 freq = Counter(text)
 total = sum(freq.values())

@@ -2,43 +2,33 @@ from collections import Counter
 
 text = "ЧТО ОН УМЕН И ОЧЕНЬ МИЛ. МЫ ВСЕ УЧИЛИСЬ ПОНЕМНОГУ"
 
-freq = Counter(text.replace('.', '').replace(',', ''))
+freq = Counter(text)
 total = sum(freq.values())
 prob = {char: count/total for char, count in freq.items()}
 
 sorted_chars = sorted(prob.items(), key=lambda x: x[1], reverse=True)
 
-def generate_codes(chars):
+def shannon_fano(chars):
+    if len(chars) == 1:
+        return {chars[0][0]: ''}
+    total_prob = sum(p for _, p in chars)
+    acc = 0
+    for i, (_, p) in enumerate(chars):
+        acc += p
+        if acc >= total_prob / 2:
+            break
+    left = chars[:i+1]
+    right = chars[i+1:]
     codes = {}
-    used_codes = set()
-    def next_code(length):
-        from itertools import product
-        for bits in product('01', repeat=length):
-            code = ''.join(bits)
-            if code[0] != '1':
-                continue
-            if '00' in code[:-2]:
-                continue
-            if code in used_codes:
-                continue
-            used_codes.add(code)
-            return code
-        return None
-    
-    for char, _ in chars:
-        length = 3
-        while True:
-            code = next_code(length)
-            if code:
-                codes[char] = code
-                break
-            length += 1
+    for k, v in shannon_fano(left).items():
+        codes[k] = '0' + v
+    for k, v in shannon_fano(right).items():
+        codes[k] = '1' + v
     return codes
 
-codes = generate_codes(sorted_chars)
+codes_sf = shannon_fano(sorted_chars)
 
-print(f"{'Буква':<5} {'Код':<8} {'pi':<8} {'ki':<3}")
+print(f"{'Буква':<3} {'Shannon-Fano':<12} {'pi':<6}")
 for char, p in sorted_chars:
-    code = codes[char]
-    k = len(code)
-    print(f"{char:<5} {code:<8} {p:<8.3f} {k:<3}")
+    code = codes_sf[char]
+    print(f"{char:<3} {code:<12} {p:<.3f}")
