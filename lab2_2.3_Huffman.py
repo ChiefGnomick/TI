@@ -35,7 +35,7 @@ codes = generate_huffman_codes(huffman_tree)
 
 print(f"{'Символ':<5} {'Код':<10} {'Вероятность':<10}")
 for char, p in sorted(prob.items(), key=lambda x: x[1], reverse=True):
-    print(f"{char:<5} {codes[char]:<10} {p:<10.3f}")
+    print(f"{char:<5} {codes[char]:<10} {p:<10.8f}")
 
 def print_tree(node, prefix='', branch=''):
     char, left, right = node
